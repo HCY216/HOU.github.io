@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TSMC 英文單字測驗 - 20題版</title>
+    <title>TSMC 英文單字測驗 - 四選一升級版</title>
     <style>
         * {
             margin: 0;
@@ -69,7 +69,7 @@
         }
 
         h3 {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 500;
             margin: 0.5rem 0;
             color: var(--text-primary);
@@ -80,27 +80,6 @@
             font-size: 14px;
             color: var(--text-secondary);
             margin-bottom: 0.5rem;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            border: 0.5px solid var(--border-color-secondary);
-            border-radius: 8px;
-            font-size: 16px;
-            color: var(--text-primary);
-            background: var(--bg-primary);
-            margin-bottom: 1.5rem;
-        }
-
-        input[type="text"]:focus {
-            outline: none;
-            border-color: var(--color-primary);
-        }
-
-        input[type="text"]:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
         }
 
         button {
@@ -170,6 +149,31 @@
             font-size: 14px;
             color: var(--text-secondary);
             margin-bottom: 1.5rem;
+        }
+
+        .features {
+            text-align: left;
+            background: var(--bg-primary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 0.5px solid var(--border-color);
+            font-size: 13px;
+        }
+
+        .features li {
+            list-style: none;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--color-success);
+            font-weight: bold;
         }
 
         .vocab-stats {
@@ -261,6 +265,60 @@
             font-size: 13px;
             color: var(--text-secondary);
             margin-bottom: 0.5rem;
+        }
+
+        .word-pos {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-btn {
+            padding: 12px;
+            border: 1px solid var(--border-color-secondary);
+            border-radius: 8px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            text-align: left;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover {
+            border-color: var(--color-info);
+            background: var(--bg-secondary);
+        }
+
+        .option-btn.selected {
+            border-color: var(--color-info);
+            background: var(--color-info);
+            color: white;
+        }
+
+        .option-btn.correct {
+            border-color: var(--color-success);
+            background: var(--color-success);
+            color: white;
+        }
+
+        .option-btn.incorrect {
+            border-color: var(--color-danger);
+            background: var(--color-danger);
+            color: white;
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
         }
 
         .feedback {
@@ -355,8 +413,17 @@
             color: var(--text-secondary);
         }
 
-        .answers-list {
-            max-height: 300px;
+        .section-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .wrong-answers-list {
+            max-height: 400px;
             overflow-y: auto;
             margin-bottom: 2rem;
             border: 0.5px solid var(--border-color);
@@ -364,57 +431,55 @@
             padding: 1rem;
         }
 
-        .answer-item {
-            padding: 0.75rem;
+        .wrong-item {
+            padding: 1rem;
             margin-bottom: 0.75rem;
-            border-radius: 8px;
-            border-left: 3px solid;
-            font-size: 12px;
-        }
-
-        .answer-item.correct {
-            background: rgba(99, 153, 34, 0.1);
-            border-left-color: var(--color-success);
-        }
-
-        .answer-item.incorrect {
             background: rgba(226, 75, 74, 0.1);
-            border-left-color: var(--color-danger);
+            border-left: 3px solid var(--color-danger);
+            border-radius: 6px;
+            text-align: left;
         }
 
-        .answer-status {
+        .wrong-item-header {
             font-weight: 500;
-            margin-bottom: 0.25rem;
-        }
-
-        .answer-status.correct {
-            color: var(--color-success);
-        }
-
-        .answer-status.incorrect {
-            color: var(--color-danger);
-        }
-
-        .answer-question {
-            margin-bottom: 0.25rem;
             color: var(--text-primary);
+            margin-bottom: 0.25rem;
         }
 
-        .answer-user {
+        .wrong-item-pos {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 0.25rem;
+        }
+
+        .wrong-item-type {
+            font-size: 12px;
             color: var(--text-secondary);
             margin-bottom: 0.25rem;
         }
 
-        .answer-correct {
+        .wrong-item-your {
+            font-size: 12px;
+            color: var(--color-danger);
+            margin-bottom: 0.25rem;
+        }
+
+        .wrong-item-correct {
+            font-size: 12px;
+            color: var(--color-success);
             font-weight: 500;
         }
 
-        .answer-correct.correct {
-            color: var(--color-success);
-        }
-
-        .answer-correct.incorrect {
-            color: var(--color-danger);
+        .wrong-count-badge {
+            display: inline-block;
+            background: var(--color-danger);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-left: 0.5rem;
+            font-weight: 500;
         }
     </style>
 </head>
@@ -426,9 +491,16 @@
             
             <div class="welcome-box">
                 <div class="welcome-emoji">📚</div>
-                <h2 class="welcome-title">準備好了嗎？</h2>
-                <p class="welcome-subtitle">隨機 20 題，英翻中與中翻英交替出題</p>
+                <h2 class="welcome-title">四選一升級版</h2>
+                <p class="welcome-subtitle">隨機 20 題，智能出題</p>
                 
+                <ul class="features">
+                    <li>四選一選擇題</li>
+                    <li>顯示詞性 (n./v./adj. 等)</li>
+                    <li>錯題統計與分析</li>
+                    <li>288 個 TSMC 常用單字</li>
+                </ul>
+
                 <div class="vocab-stats">
                     <div class="vocab-stat">
                         <div class="vocab-stat-number">288</div>
@@ -469,14 +541,15 @@
             <div class="question-box">
                 <p class="question-type" id="questionType">英文 → 中文</p>
                 <h3 id="question">Question</h3>
+                <p class="word-pos" id="wordPos"></p>
             </div>
 
-            <input type="text" id="answerInput" placeholder="輸入你的答案..." onkeypress="handleKeyPress(event)">
+            <div class="options" id="optionsContainer"></div>
 
             <div id="feedbackBox" class="feedback hidden"></div>
 
             <div class="button-group">
-                <button id="submitBtn" class="primary" onclick="checkAnswer()">確認答案</button>
+                <button id="submitBtn" class="primary" onclick="submitAnswer()" style="display: none;">確認答案</button>
                 <button onclick="resetQuiz()">返回</button>
             </div>
         </div>
@@ -504,7 +577,13 @@
                 <p class="evaluation-message" id="evaluationMessage">你掌握了大部分的單字！</p>
             </div>
 
-            <div class="answers-list" id="answersList"></div>
+            <div id="wrongAnswersSection" class="hidden">
+                <p class="section-title">
+                    ❌ 錯誤題目統計 
+                    <span class="wrong-count-badge" id="wrongCount">0</span>
+                </p>
+                <div class="wrong-answers-list" id="wrongAnswersList"></div>
+            </div>
 
             <div class="button-group">
                 <button class="primary" onclick="retakeQuiz()">重新測驗</button>
@@ -514,295 +593,308 @@
     </div>
 
     <script>
-        // 內建題庫 - TSMC 常用英文單字
+        // 隨機詞彙生成（用於干擾項）
+        const randomWords = [
+            'analyze', 'benchmark', 'calibrate', 'diagnose', 'evaluate',
+            'fabricate', 'generate', 'handle', 'integrate', 'justify',
+            'knowledge', 'leverage', 'manipulate', 'navigate', 'optimize',
+            'protocol', 'quantify', 'realize', 'simulate', 'terminate',
+            'utilize', 'validate', 'warehouse', 'xenophobic', 'yield',
+            'aggregate', 'calculate', 'database', 'encrypt', 'firmware',
+            'graphics', 'hardware', 'initialize', 'junction', 'kernel',
+            'layout', 'module', 'network', 'oscillate', 'package',
+            'quantum', 'register', 'sequence', 'threshold', 'upload'
+        ];
+
+        // 內建題庫 - TSMC 常用英文單字 (帶詞性)
         const builtInVocab = [
-            {english: "ability", chinese: "能力"},
-            {english: "abnormal", chinese: "異常的"},
-            {english: "abort", chinese: "中止"},
-            {english: "absence", chinese: "缺席"},
-            {english: "acid", chinese: "酸"},
-            {english: "active", chinese: "主動的"},
-            {english: "actual", chinese: "真實的"},
-            {english: "add", chinese: "增加"},
-            {english: "adjust", chinese: "調整"},
-            {english: "AI", chinese: "人工智慧"},
-            {english: "air shower", chinese: "潔淨通道"},
-            {english: "alarm", chinese: "警報"},
-            {english: "alert", chinese: "警報"},
-            {english: "align", chinese: "對焦"},
-            {english: "annually", chinese: "每年的"},
-            {english: "area", chinese: "區域"},
-            {english: "attach", chinese: "附上"},
-            {english: "audit", chinese: "稽核、查核"},
-            {english: "automatic", chinese: "自動的"},
-            {english: "automotive", chinese: "汽車的"},
-            {english: "available", chinese: "可使用的"},
-            {english: "average", chinese: "平均"},
-            {english: "backup", chinese: "支援"},
-            {english: "bank", chinese: "銀行"},
-            {english: "basic", chinese: "基礎的"},
-            {english: "beam", chinese: "光束"},
-            {english: "benchmark", chinese: "標竿學習"},
-            {english: "bottle", chinese: "瓶子"},
-            {english: "bottom", chinese: "底部"},
-            {english: "broken", chinese: "破掉的"},
-            {english: "cancel", chinese: "取消"},
-            {english: "card", chinese: "卡片"},
-            {english: "cart", chinese: "手推車"},
-            {english: "cassette", chinese: "晶片專用盒"},
-            {english: "center", chinese: "中心"},
-            {english: "certify", chinese: "證實、認證"},
-            {english: "change", chinese: "更換"},
-            {english: "chart", chinese: "圖表"},
-            {english: "check", chinese: "檢查"},
-            {english: "chemical", chinese: "化學、化學品"},
-            {english: "chip", chinese: "晶片"},
-            {english: "choose", chinese: "挑選"},
-            {english: "clean", chinese: "清潔"},
-            {english: "clean chamber", chinese: "潔淨室"},
-            {english: "clear", chinese: "清除"},
-            {english: "collect", chinese: "蒐集"},
-            {english: "color", chinese: "顏色"},
-            {english: "comment", chinese: "評論"},
-            {english: "company", chinese: "公司"},
-            {english: "complete", chinese: "完成"},
-            {english: "computer", chinese: "電腦"},
-            {english: "concern", chinese: "擔憂"},
-            {english: "confidential", chinese: "機密的"},
-            {english: "confirm", chinese: "確認"},
-            {english: "contamination", chinese: "污染"},
-            {english: "continue", chinese: "繼續"},
-            {english: "control", chinese: "控制"},
-            {english: "copy", chinese: "拷貝"},
-            {english: "count", chinese: "計算"},
-            {english: "customer", chinese: "客戶"},
-            {english: "cycle", chinese: "週期"},
-            {english: "cycle time", chinese: "生產週期"},
-            {english: "daily", chinese: "每日的"},
-            {english: "data", chinese: "資料"},
-            {english: "date", chinese: "日期"},
-            {english: "decline", chinese: "減少"},
-            {english: "defect", chinese: "缺陷"},
-            {english: "delay", chinese: "延遲"},
-            {english: "delete", chinese: "刪除"},
-            {english: "diffusion", chinese: "擴散製程"},
-            {english: "document", chinese: "文件"},
-            {english: "dry", chinese: "乾的"},
-            {english: "emergency", chinese: "緊急情況"},
-            {english: "emergency stop", chinese: "緊急停止"},
-            {english: "engineer", chinese: "工程師"},
-            {english: "enhance", chinese: "增進"},
-            {english: "enter", chinese: "進入"},
-            {english: "environment", chinese: "環境"},
-            {english: "equipment", chinese: "設備"},
-            {english: "error", chinese: "錯誤"},
-            {english: "etching", chinese: "蝕刻製程"},
-            {english: "EUV", chinese: "極紫外光"},
-            {english: "event", chinese: "事件"},
-            {english: "execute", chinese: "執行"},
-            {english: "exit", chinese: "退出"},
-            {english: "fault", chinese: "錯誤"},
-            {english: "find", chinese: "發現"},
-            {english: "floor", chinese: "地板"},
-            {english: "focus", chinese: "焦點"},
-            {english: "follow", chinese: "照做、跟隨"},
-            {english: "freeze", chinese: "凍結"},
-            {english: "full", chinese: "滿的"},
-            {english: "function", chinese: "功能"},
-            {english: "gas", chinese: "氣體"},
-            {english: "glass", chinese: "玻璃、鏡片"},
-            {english: "gloves", chinese: "手套"},
-            {english: "grade", chinese: "等級"},
-            {english: "green", chinese: "綠色"},
-            {english: "group", chinese: "群組"},
-            {english: "handle", chinese: "處理"},
-            {english: "hard-disk", chinese: "硬盤"},
-            {english: "heavy", chinese: "重的"},
-            {english: "helmet", chinese: "安全帽"},
-            {english: "help", chinese: "幫助"},
-            {english: "hold", chinese: "暫停"},
-            {english: "hole", chinese: "孔、洞"},
-            {english: "hot", chinese: "熱的"},
-            {english: "impact", chinese: "影響"},
-            {english: "improve", chinese: "改善"},
-            {english: "inform", chinese: "通知"},
-            {english: "information", chinese: "資訊"},
-            {english: "inhibition", chinese: "禁止禁用"},
-            {english: "input", chinese: "輸入"},
-            {english: "inspect", chinese: "檢查"},
-            {english: "inspection", chinese: "檢驗"},
-            {english: "instruction", chinese: "指令"},
-            {english: "internet", chinese: "網際網路"},
-            {english: "interview", chinese: "面試"},
-            {english: "issue", chinese: "發行、議題"},
-            {english: "job", chinese: "工作"},
-            {english: "keep", chinese: "保持"},
-            {english: "keyboard", chinese: "鍵盤"},
-            {english: "label", chinese: "標籤"},
-            {english: "laboratory", chinese: "實驗室"},
-            {english: "leader", chinese: "組長"},
-            {english: "learn", chinese: "學習"},
-            {english: "level", chinese: "程度"},
-            {english: "lift", chinese: "抬起、舉起"},
-            {english: "light", chinese: "光"},
-            {english: "line", chinese: "直線"},
-            {english: "link", chinese: "連結"},
-            {english: "liquid", chinese: "液體"},
-            {english: "list", chinese: "清單"},
-            {english: "lithography", chinese: "黃光、微影製程"},
-            {english: "load", chinese: "上貨、裝載"},
-            {english: "loading", chinese: "負荷"},
-            {english: "lobby", chinese: "大廳"},
-            {english: "location", chinese: "位置"},
-            {english: "lock", chinese: "鎖住"},
-            {english: "log sheet", chinese: "工作紀錄"},
-            {english: "lose", chinese: "遺失"},
-            {english: "lot", chinese: "批貨"},
-            {english: "machine", chinese: "機器"},
-            {english: "maintain", chinese: "維護"},
-            {english: "manual", chinese: "手動的"},
-            {english: "manufacture", chinese: "製造"},
-            {english: "mark", chinese: "記號"},
-            {english: "mask", chinese: "光罩、口罩"},
-            {english: "material", chinese: "原料"},
-            {english: "measure", chinese: "量測"},
-            {english: "mechanical", chinese: "機械的"},
-            {english: "merge", chinese: "合併"},
-            {english: "message", chinese: "訊息"},
-            {english: "metal", chinese: "金屬"},
-            {english: "miss-operation", chinese: "錯誤動作"},
-            {english: "monitor", chinese: "監視器、測機"},
-            {english: "monthly", chinese: "每月的"},
-            {english: "more", chinese: "更多的"},
-            {english: "move", chinese: "移動"},
-            {english: "new", chinese: "新的"},
-            {english: "normal", chinese: "正常的"},
-            {english: "note", chinese: "註解"},
-            {english: "notice", chinese: "通知"},
-            {english: "number", chinese: "號碼"},
-            {english: "office", chinese: "辦公室"},
-            {english: "off-line", chinese: "離線的"},
-            {english: "on time", chinese: "準時"},
-            {english: "on-line", chinese: "在線的"},
-            {english: "operation", chinese: "操作"},
-            {english: "output", chinese: "輸出"},
-            {english: "oven", chinese: "烤箱"},
-            {english: "over time", chinese: "加班"},
-            {english: "page", chinese: "頁數"},
-            {english: "paper", chinese: "紙張"},
-            {english: "parameter", chinese: "參數"},
-            {english: "part", chinese: "零件"},
-            {english: "particle", chinese: "微粒"},
-            {english: "pass", chinese: "合格"},
-            {english: "password", chinese: "密碼"},
-            {english: "perfect", chinese: "完美的"},
-            {english: "personal", chinese: "個人的"},
-            {english: "phase", chinese: "階段"},
-            {english: "photo", chinese: "相片"},
-            {english: "plan", chinese: "計劃"},
-            {english: "plus", chinese: "加上"},
-            {english: "pod", chinese: "晶片傳送盒"},
-            {english: "point", chinese: "點"},
-            {english: "position", chinese: "位置"},
-            {english: "positive", chinese: "正向的"},
-            {english: "postpone", chinese: "延期"},
-            {english: "power", chinese: "力量"},
-            {english: "practice", chinese: "練習"},
-            {english: "prepare", chinese: "準備"},
-            {english: "press", chinese: "按下"},
-            {english: "pressure", chinese: "壓力"},
-            {english: "preview", chinese: "預覽"},
-            {english: "price", chinese: "價格"},
-            {english: "print", chinese: "列印"},
-            {english: "priority", chinese: "優先順序"},
-            {english: "process", chinese: "過程、流程"},
-            {english: "product", chinese: "產品"},
-            {english: "protect", chinese: "保護"},
-            {english: "purge", chinese: "清除"},
-            {english: "push", chinese: "推進"},
-            {english: "quality", chinese: "品質"},
-            {english: "quantity", chinese: "數量"},
-            {english: "rate", chinese: "比率"},
-            {english: "re-certify", chinese: "重新認證"},
-            {english: "recipe", chinese: "食譜、處方程式"},
-            {english: "record", chinese: "記錄"},
-            {english: "recover", chinese: "復機"},
-            {english: "release", chinese: "釋放"},
-            {english: "remark", chinese: "註記"},
-            {english: "remind", chinese: "提醒"},
-            {english: "remove", chinese: "移開"},
-            {english: "repair", chinese: "修理"},
-            {english: "report", chinese: "報告"},
-            {english: "reset", chinese: "重設"},
-            {english: "rework", chinese: "重做"},
-            {english: "route", chinese: "路線"},
-            {english: "rule", chinese: "規則"},
-            {english: "run", chinese: "運轉、跑"},
-            {english: "run-card", chinese: "流程卡"},
-            {english: "safe", chinese: "安全的"},
-            {english: "same", chinese: "相同的"},
-            {english: "save", chinese: "儲存"},
-            {english: "scrap", chinese: "報廢"},
-            {english: "scratch", chinese: "刮傷"},
-            {english: "screen", chinese: "螢幕"},
-            {english: "select", chinese: "選擇"},
-            {english: "semiconductor", chinese: "半導體"},
-            {english: "service", chinese: "服務"},
-            {english: "sheet", chinese: "表單"},
-            {english: "shift", chinese: "班次"},
-            {english: "show", chinese: "顯示"},
-            {english: "shuttle", chinese: "接駁車"},
-            {english: "skip", chinese: "跳過"},
-            {english: "sorter", chinese: "排序機、分類機"},
-            {english: "source", chinese: "來源"},
-            {english: "specification", chinese: "規格"},
-            {english: "speed", chinese: "速度"},
-            {english: "split", chinese: "分帳、分批"},
-            {english: "stage", chinese: "站別、階段"},
-            {english: "standard", chinese: "標準"},
-            {english: "standby", chinese: "等待"},
-            {english: "start", chinese: "啟動"},
-            {english: "station", chinese: "站"},
-            {english: "status", chinese: "狀況"},
-            {english: "step", chinese: "步驟"},
-            {english: "stocker", chinese: "儲存櫃"},
-            {english: "success", chinese: "成功"},
-            {english: "super", chinese: "超級的"},
-            {english: "super hot run", chinese: "超級急件"},
-            {english: "supervisor", chinese: "監督者"},
-            {english: "support", chinese: "支援"},
-            {english: "switch", chinese: "開關"},
-            {english: "system", chinese: "系統"},
-            {english: "tag", chinese: "標籤"},
-            {english: "take leave", chinese: "請假"},
-            {english: "tape", chinese: "膠帶"},
-            {english: "target", chinese: "目標"},
-            {english: "technician", chinese: "技術員"},
-            {english: "telephone", chinese: "電話"},
-            {english: "temperature", chinese: "溫度"},
-            {english: "thickness", chinese: "厚度"},
-            {english: "thin film", chinese: "薄膜製程"},
-            {english: "time", chinese: "時間"},
-            {english: "title", chinese: "標題"},
-            {english: "top", chinese: "頂端"},
-            {english: "track", chinese: "追蹤"},
-            {english: "training", chinese: "訓練"},
-            {english: "trend", chinese: "趨勢"},
-            {english: "tune", chinese: "調整"},
-            {english: "turn rate", chinese: "週轉率"},
-            {english: "unload", chinese: "下貨、卸載"},
-            {english: "use", chinese: "使用"},
-            {english: "username", chinese: "使用者名稱"},
-            {english: "vendor", chinese: "廠商"},
-            {english: "view", chinese: "查看"},
-            {english: "wafer", chinese: "晶圓"},
-            {english: "waiting", chinese: "等待"},
-            {english: "warning", chinese: "警告"},
-            {english: "weekly", chinese: "每週地"},
-            {english: "wet", chinese: "濕的"},
-            {english: "window", chinese: "視窗"},
-            {english: "yield", chinese: "良率"},
-            {english: "zero", chinese: "零"}
+            {english: "ability", chinese: "能力", pos: "n."},
+            {english: "abnormal", chinese: "異常的", pos: "a."},
+            {english: "abort", chinese: "中止", pos: "v."},
+            {english: "absence", chinese: "缺席", pos: "n."},
+            {english: "acid", chinese: "酸", pos: "n."},
+            {english: "active", chinese: "主動的", pos: "a."},
+            {english: "actual", chinese: "真實的", pos: "a."},
+            {english: "add", chinese: "增加", pos: "v."},
+            {english: "adjust", chinese: "調整", pos: "v."},
+            {english: "AI", chinese: "人工智慧", pos: "n."},
+            {english: "air shower", chinese: "潔淨通道", pos: "n."},
+            {english: "alarm", chinese: "警報", pos: "n."},
+            {english: "alert", chinese: "警報", pos: "n."},
+            {english: "align", chinese: "對焦", pos: "v."},
+            {english: "annually", chinese: "每年的", pos: "a."},
+            {english: "area", chinese: "區域", pos: "n."},
+            {english: "attach", chinese: "附上", pos: "v."},
+            {english: "audit", chinese: "稽核、查核", pos: "v."},
+            {english: "automatic", chinese: "自動的", pos: "a."},
+            {english: "automotive", chinese: "汽車的", pos: "a."},
+            {english: "available", chinese: "可使用的", pos: "a."},
+            {english: "average", chinese: "平均", pos: "n."},
+            {english: "backup", chinese: "支援", pos: "n."},
+            {english: "bank", chinese: "銀行", pos: "n."},
+            {english: "basic", chinese: "基礎的", pos: "a."},
+            {english: "beam", chinese: "光束", pos: "n."},
+            {english: "benchmark", chinese: "標竿學習", pos: "n."},
+            {english: "bottle", chinese: "瓶子", pos: "n."},
+            {english: "bottom", chinese: "底部", pos: "n."},
+            {english: "broken", chinese: "破掉的", pos: "a."},
+            {english: "cancel", chinese: "取消", pos: "v."},
+            {english: "card", chinese: "卡片", pos: "n."},
+            {english: "cart", chinese: "手推車", pos: "n."},
+            {english: "cassette", chinese: "晶片專用盒", pos: "n."},
+            {english: "center", chinese: "中心", pos: "n."},
+            {english: "certify", chinese: "證實、認證", pos: "v."},
+            {english: "change", chinese: "更換", pos: "v."},
+            {english: "chart", chinese: "圖表", pos: "n."},
+            {english: "check", chinese: "檢查", pos: "v."},
+            {english: "chemical", chinese: "化學、化學品", pos: "n."},
+            {english: "chip", chinese: "晶片", pos: "n."},
+            {english: "choose", chinese: "挑選", pos: "v."},
+            {english: "clean", chinese: "清潔", pos: "v."},
+            {english: "clean chamber", chinese: "潔淨室", pos: "n."},
+            {english: "clear", chinese: "清除", pos: "v."},
+            {english: "collect", chinese: "蒐集", pos: "v."},
+            {english: "color", chinese: "顏色", pos: "n."},
+            {english: "comment", chinese: "評論", pos: "n."},
+            {english: "company", chinese: "公司", pos: "n."},
+            {english: "complete", chinese: "完成", pos: "v."},
+            {english: "computer", chinese: "電腦", pos: "n."},
+            {english: "concern", chinese: "擔憂", pos: "v."},
+            {english: "confidential", chinese: "機密的", pos: "a."},
+            {english: "confirm", chinese: "確認", pos: "v."},
+            {english: "contamination", chinese: "污染", pos: "n."},
+            {english: "continue", chinese: "繼續", pos: "v."},
+            {english: "control", chinese: "控制", pos: "n."},
+            {english: "copy", chinese: "拷貝", pos: "n."},
+            {english: "count", chinese: "計算", pos: "v."},
+            {english: "customer", chinese: "客戶", pos: "n."},
+            {english: "cycle", chinese: "週期", pos: "n."},
+            {english: "cycle time", chinese: "生產週期", pos: "n."},
+            {english: "daily", chinese: "每日的", pos: "a."},
+            {english: "data", chinese: "資料", pos: "n."},
+            {english: "date", chinese: "日期", pos: "n."},
+            {english: "decline", chinese: "減少", pos: "v."},
+            {english: "defect", chinese: "缺陷", pos: "n."},
+            {english: "delay", chinese: "延遲", pos: "v."},
+            {english: "delete", chinese: "刪除", pos: "v."},
+            {english: "diffusion", chinese: "擴散製程", pos: "n."},
+            {english: "document", chinese: "文件", pos: "n."},
+            {english: "dry", chinese: "乾的", pos: "a."},
+            {english: "emergency", chinese: "緊急情況", pos: "n."},
+            {english: "emergency stop", chinese: "緊急停止", pos: "n."},
+            {english: "engineer", chinese: "工程師", pos: "n."},
+            {english: "enhance", chinese: "增進", pos: "v."},
+            {english: "enter", chinese: "進入", pos: "v."},
+            {english: "environment", chinese: "環境", pos: "n."},
+            {english: "equipment", chinese: "設備", pos: "n."},
+            {english: "error", chinese: "錯誤", pos: "n."},
+            {english: "etching", chinese: "蝕刻製程", pos: "n."},
+            {english: "EUV", chinese: "極紫外光", pos: "n."},
+            {english: "event", chinese: "事件", pos: "n."},
+            {english: "execute", chinese: "執行", pos: "v."},
+            {english: "exit", chinese: "退出", pos: "n."},
+            {english: "fault", chinese: "錯誤", pos: "n."},
+            {english: "find", chinese: "發現", pos: "v."},
+            {english: "floor", chinese: "地板", pos: "n."},
+            {english: "focus", chinese: "焦點", pos: "n."},
+            {english: "follow", chinese: "照做、跟隨", pos: "v."},
+            {english: "freeze", chinese: "凍結", pos: "v."},
+            {english: "full", chinese: "滿的", pos: "a."},
+            {english: "function", chinese: "功能", pos: "n."},
+            {english: "gas", chinese: "氣體", pos: "n."},
+            {english: "glass", chinese: "玻璃、鏡片", pos: "n."},
+            {english: "gloves", chinese: "手套", pos: "n."},
+            {english: "grade", chinese: "等級", pos: "n."},
+            {english: "green", chinese: "綠色", pos: "n."},
+            {english: "group", chinese: "群組", pos: "n."},
+            {english: "handle", chinese: "處理", pos: "v."},
+            {english: "hard-disk", chinese: "硬盤", pos: "n."},
+            {english: "heavy", chinese: "重的", pos: "a."},
+            {english: "helmet", chinese: "安全帽", pos: "n."},
+            {english: "help", chinese: "幫助", pos: "v."},
+            {english: "hold", chinese: "暫停", pos: "v."},
+            {english: "hole", chinese: "孔、洞", pos: "n."},
+            {english: "hot", chinese: "熱的", pos: "a."},
+            {english: "impact", chinese: "影響", pos: "n."},
+            {english: "improve", chinese: "改善", pos: "v."},
+            {english: "inform", chinese: "通知", pos: "v."},
+            {english: "information", chinese: "資訊", pos: "n."},
+            {english: "inhibition", chinese: "禁止禁用", pos: "n."},
+            {english: "input", chinese: "輸入", pos: "n."},
+            {english: "inspect", chinese: "檢查", pos: "v."},
+            {english: "inspection", chinese: "檢驗", pos: "n."},
+            {english: "instruction", chinese: "指令", pos: "n."},
+            {english: "internet", chinese: "網際網路", pos: "n."},
+            {english: "interview", chinese: "面試", pos: "n."},
+            {english: "issue", chinese: "發行、議題", pos: "n."},
+            {english: "job", chinese: "工作", pos: "n."},
+            {english: "keep", chinese: "保持", pos: "v."},
+            {english: "keyboard", chinese: "鍵盤", pos: "n."},
+            {english: "label", chinese: "標籤", pos: "n."},
+            {english: "laboratory", chinese: "實驗室", pos: "n."},
+            {english: "leader", chinese: "組長", pos: "n."},
+            {english: "learn", chinese: "學習", pos: "v."},
+            {english: "level", chinese: "程度", pos: "n."},
+            {english: "lift", chinese: "抬起、舉起", pos: "v."},
+            {english: "light", chinese: "光", pos: "n."},
+            {english: "line", chinese: "直線", pos: "n."},
+            {english: "link", chinese: "連結", pos: "n."},
+            {english: "liquid", chinese: "液體", pos: "n."},
+            {english: "list", chinese: "清單", pos: "n."},
+            {english: "lithography", chinese: "黃光、微影製程", pos: "n."},
+            {english: "load", chinese: "上貨、裝載", pos: "v."},
+            {english: "loading", chinese: "負荷", pos: "n."},
+            {english: "lobby", chinese: "大廳", pos: "n."},
+            {english: "location", chinese: "位置", pos: "n."},
+            {english: "lock", chinese: "鎖住", pos: "v."},
+            {english: "log sheet", chinese: "工作紀錄", pos: "n."},
+            {english: "lose", chinese: "遺失", pos: "v."},
+            {english: "lot", chinese: "批貨", pos: "n."},
+            {english: "machine", chinese: "機器", pos: "n."},
+            {english: "maintain", chinese: "維護", pos: "v."},
+            {english: "manual", chinese: "手動的", pos: "a."},
+            {english: "manufacture", chinese: "製造", pos: "v."},
+            {english: "mark", chinese: "記號", pos: "n."},
+            {english: "mask", chinese: "光罩、口罩", pos: "n."},
+            {english: "material", chinese: "原料", pos: "n."},
+            {english: "measure", chinese: "量測", pos: "v."},
+            {english: "mechanical", chinese: "機械的", pos: "a."},
+            {english: "merge", chinese: "合併", pos: "v."},
+            {english: "message", chinese: "訊息", pos: "n."},
+            {english: "metal", chinese: "金屬", pos: "n."},
+            {english: "miss-operation", chinese: "錯誤動作", pos: "n."},
+            {english: "monitor", chinese: "監視器、測機", pos: "n."},
+            {english: "monthly", chinese: "每月的", pos: "a."},
+            {english: "more", chinese: "更多的", pos: "a."},
+            {english: "move", chinese: "移動", pos: "v."},
+            {english: "new", chinese: "新的", pos: "a."},
+            {english: "normal", chinese: "正常的", pos: "a."},
+            {english: "note", chinese: "註解", pos: "n."},
+            {english: "notice", chinese: "通知", pos: "n."},
+            {english: "number", chinese: "號碼", pos: "n."},
+            {english: "office", chinese: "辦公室", pos: "n."},
+            {english: "off-line", chinese: "離線的", pos: "a."},
+            {english: "on time", chinese: "準時", pos: "ph."},
+            {english: "on-line", chinese: "在線的", pos: "a."},
+            {english: "operation", chinese: "操作", pos: "n."},
+            {english: "output", chinese: "輸出", pos: "n."},
+            {english: "oven", chinese: "烤箱", pos: "n."},
+            {english: "over time", chinese: "加班", pos: "ph."},
+            {english: "page", chinese: "頁數", pos: "n."},
+            {english: "paper", chinese: "紙張", pos: "n."},
+            {english: "parameter", chinese: "參數", pos: "n."},
+            {english: "part", chinese: "零件", pos: "n."},
+            {english: "particle", chinese: "微粒", pos: "n."},
+            {english: "pass", chinese: "合格", pos: "v."},
+            {english: "password", chinese: "密碼", pos: "n."},
+            {english: "perfect", chinese: "完美的", pos: "a."},
+            {english: "personal", chinese: "個人的", pos: "a."},
+            {english: "phase", chinese: "階段", pos: "n."},
+            {english: "photo", chinese: "相片", pos: "n."},
+            {english: "plan", chinese: "計劃", pos: "n."},
+            {english: "plus", chinese: "加上", pos: "prep."},
+            {english: "pod", chinese: "晶片傳送盒", pos: "n."},
+            {english: "point", chinese: "點", pos: "n."},
+            {english: "position", chinese: "位置", pos: "n."},
+            {english: "positive", chinese: "正向的", pos: "a."},
+            {english: "postpone", chinese: "延期", pos: "v."},
+            {english: "power", chinese: "力量", pos: "n."},
+            {english: "practice", chinese: "練習", pos: "v."},
+            {english: "prepare", chinese: "準備", pos: "v."},
+            {english: "press", chinese: "按下", pos: "v."},
+            {english: "pressure", chinese: "壓力", pos: "n."},
+            {english: "preview", chinese: "預覽", pos: "n."},
+            {english: "price", chinese: "價格", pos: "n."},
+            {english: "print", chinese: "列印", pos: "n."},
+            {english: "priority", chinese: "優先順序", pos: "n."},
+            {english: "process", chinese: "過程、流程", pos: "n."},
+            {english: "product", chinese: "產品", pos: "n."},
+            {english: "protect", chinese: "保護", pos: "v."},
+            {english: "purge", chinese: "清除", pos: "v."},
+            {english: "push", chinese: "推進", pos: "v."},
+            {english: "quality", chinese: "品質", pos: "n."},
+            {english: "quantity", chinese: "數量", pos: "n."},
+            {english: "rate", chinese: "比率", pos: "n."},
+            {english: "re-certify", chinese: "重新認證", pos: "v."},
+            {english: "recipe", chinese: "食譜、處方程式", pos: "n."},
+            {english: "record", chinese: "記錄", pos: "n."},
+            {english: "recover", chinese: "復機", pos: "v."},
+            {english: "release", chinese: "釋放", pos: "v."},
+            {english: "remark", chinese: "註記", pos: "n."},
+            {english: "remind", chinese: "提醒", pos: "v."},
+            {english: "remove", chinese: "移開", pos: "v."},
+            {english: "repair", chinese: "修理", pos: "v."},
+            {english: "report", chinese: "報告", pos: "n."},
+            {english: "reset", chinese: "重設", pos: "v."},
+            {english: "rework", chinese: "重做", pos: "v."},
+            {english: "route", chinese: "路線", pos: "n."},
+            {english: "rule", chinese: "規則", pos: "n."},
+            {english: "run", chinese: "運轉、跑", pos: "v."},
+            {english: "run-card", chinese: "流程卡", pos: "n."},
+            {english: "safe", chinese: "安全的", pos: "a."},
+            {english: "same", chinese: "相同的", pos: "a."},
+            {english: "save", chinese: "儲存", pos: "v."},
+            {english: "scrap", chinese: "報廢", pos: "n."},
+            {english: "scratch", chinese: "刮傷", pos: "v."},
+            {english: "screen", chinese: "螢幕", pos: "n."},
+            {english: "select", chinese: "選擇", pos: "v."},
+            {english: "semiconductor", chinese: "半導體", pos: "n."},
+            {english: "service", chinese: "服務", pos: "n."},
+            {english: "sheet", chinese: "表單", pos: "n."},
+            {english: "shift", chinese: "班次", pos: "n."},
+            {english: "show", chinese: "顯示", pos: "v."},
+            {english: "shuttle", chinese: "接駁車", pos: "n."},
+            {english: "skip", chinese: "跳過", pos: "v."},
+            {english: "sorter", chinese: "排序機、分類機", pos: "n."},
+            {english: "source", chinese: "來源", pos: "n."},
+            {english: "specification", chinese: "規格", pos: "n."},
+            {english: "speed", chinese: "速度", pos: "n."},
+            {english: "split", chinese: "分帳、分批", pos: "n."},
+            {english: "stage", chinese: "站別、階段", pos: "n."},
+            {english: "standard", chinese: "標準", pos: "n."},
+            {english: "standby", chinese: "等待", pos: "n."},
+            {english: "start", chinese: "啟動", pos: "n."},
+            {english: "station", chinese: "站", pos: "n."},
+            {english: "status", chinese: "狀況", pos: "n."},
+            {english: "step", chinese: "步驟", pos: "n."},
+            {english: "stocker", chinese: "儲存櫃", pos: "n."},
+            {english: "success", chinese: "成功", pos: "n."},
+            {english: "super", chinese: "超級的", pos: "a."},
+            {english: "super hot run", chinese: "超級急件", pos: "n."},
+            {english: "supervisor", chinese: "監督者", pos: "n."},
+            {english: "support", chinese: "支援", pos: "n."},
+            {english: "switch", chinese: "開關", pos: "n."},
+            {english: "system", chinese: "系統", pos: "n."},
+            {english: "tag", chinese: "標籤", pos: "n."},
+            {english: "take leave", chinese: "請假", pos: "ph."},
+            {english: "tape", chinese: "膠帶", pos: "n."},
+            {english: "target", chinese: "目標", pos: "n."},
+            {english: "technician", chinese: "技術員", pos: "n."},
+            {english: "telephone", chinese: "電話", pos: "n."},
+            {english: "temperature", chinese: "溫度", pos: "n."},
+            {english: "thickness", chinese: "厚度", pos: "n."},
+            {english: "thin film", chinese: "薄膜製程", pos: "n."},
+            {english: "time", chinese: "時間", pos: "n."},
+            {english: "title", chinese: "標題", pos: "n."},
+            {english: "top", chinese: "頂端", pos: "n."},
+            {english: "track", chinese: "追蹤", pos: "v."},
+            {english: "training", chinese: "訓練", pos: "n."},
+            {english: "trend", chinese: "趨勢", pos: "n."},
+            {english: "tune", chinese: "調整", pos: "v."},
+            {english: "turn rate", chinese: "週轉率", pos: "n."},
+            {english: "unload", chinese: "下貨、卸載", pos: "v."},
+            {english: "use", chinese: "使用", pos: "v."},
+            {english: "username", chinese: "使用者名稱", pos: "n."},
+            {english: "vendor", chinese: "廠商", pos: "n."},
+            {english: "view", chinese: "查看", pos: "v."},
+            {english: "wafer", chinese: "晶圓", pos: "n."},
+            {english: "waiting", chinese: "等待", pos: "n."},
+            {english: "warning", chinese: "警告", pos: "n."},
+            {english: "weekly", chinese: "每週地", pos: "adv."},
+            {english: "wet", chinese: "濕的", pos: "a."},
+            {english: "window", chinese: "視窗", pos: "n."},
+            {english: "yield", chinese: "良率", pos: "n."},
+            {english: "zero", chinese: "零", pos: "n."}
         ];
 
         // State
@@ -811,18 +903,77 @@
         let currentQuestionIndex = 0;
         let score = 0;
         let answers = [];
-        let showingResult = false;
+        let selectedOption = null;
+        let wrongAnswers = {};
+
+        function getRandomWrongAnswers(correctAnswer, correctChinese, count = 3) {
+            const answers = [];
+            const usedWords = new Set([correctAnswer, correctChinese]);
+            
+            // 先從題庫中取得其他中文答案
+            for (let vocab of builtInVocab) {
+                if (answers.length >= count) break;
+                if (!usedWords.has(vocab.chinese) && vocab.chinese !== correctChinese) {
+                    answers.push(vocab.chinese);
+                    usedWords.add(vocab.chinese);
+                }
+            }
+            
+            // 如果還需要更多，用隨機詞彙加個後綴
+            while (answers.length < count) {
+                const randomWord = randomWords[Math.floor(Math.random() * randomWords.length)];
+                const suffix = ['ation', 'ment', 'ness', 'ity', 'ing'][Math.floor(Math.random() * 5)];
+                const fakeAnswer = randomWord + suffix;
+                
+                if (!usedWords.has(fakeAnswer)) {
+                    answers.push(fakeAnswer);
+                    usedWords.add(fakeAnswer);
+                }
+            }
+            
+            return answers;
+        }
 
         function generateQuiz(vocab) {
             const shuffled = [...vocab].sort(() => Math.random() - 0.5);
             const selected = shuffled.slice(0, 20);
             
-            return selected.map(vocab => ({
-                vocab,
-                isEnglishToChina: Math.random() > 0.5,
-                question: Math.random() > 0.5 ? vocab.english : vocab.chinese,
-                answer: Math.random() > 0.5 ? vocab.chinese : vocab.english
-            }));
+            return selected.map(vocab => {
+                const isEnglishToChina = Math.random() > 0.5;
+                const question = isEnglishToChina ? vocab.english : vocab.chinese;
+                const correctAnswer = isEnglishToChina ? vocab.chinese : vocab.english;
+                
+                let options = [correctAnswer];
+                
+                if (isEnglishToChina) {
+                    // 英翻中：找其他中文選項
+                    options = options.concat(getRandomWrongAnswers(vocab.english, vocab.chinese, 3));
+                } else {
+                    // 中翻英：找其他英文選項
+                    const wrongEnglish = [];
+                    for (let v of builtInVocab) {
+                        if (wrongEnglish.length >= 3) break;
+                        if (v.english !== vocab.english) {
+                            wrongEnglish.push(v.english);
+                        }
+                    }
+                    while (wrongEnglish.length < 3) {
+                        wrongEnglish.push(randomWords[Math.floor(Math.random() * randomWords.length)]);
+                    }
+                    options = options.concat(wrongEnglish);
+                }
+                
+                // 隨機排列選項
+                options = options.sort(() => Math.random() - 0.5);
+                
+                return {
+                    vocab,
+                    isEnglishToChina,
+                    question,
+                    correctAnswer,
+                    options
+                };
+            });
         }
 
         function startQuiz() {
@@ -830,7 +981,8 @@
             score = 0;
             currentQuestionIndex = 0;
             answers = [];
-            showingResult = false;
+            wrongAnswers = {};
+            selectedOption = null;
 
             displayQuestion();
             setStage('quiz');
@@ -849,58 +1001,101 @@
             document.getElementById('progressFill').style.width = `${(progress / 20) * 100}%`;
             document.getElementById('questionType').textContent = q.isEnglishToChina ? '英文 → 中文' : '中文 → 英文';
             document.getElementById('question').textContent = q.question;
+            document.getElementById('wordPos').textContent = `(${q.vocab.pos})`;
 
-            document.getElementById('answerInput').value = '';
+            // 生成選項按鈕
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            q.options.forEach((option, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = option;
+                btn.onclick = () => selectOption(idx, option);
+                optionsContainer.appendChild(btn);
+            });
+
             document.getElementById('feedbackBox').classList.add('hidden');
-            document.getElementById('answerInput').disabled = false;
-            document.getElementById('submitBtn').textContent = '確認答案';
-            showingResult = false;
-
-            document.getElementById('answerInput').focus();
+            document.getElementById('submitBtn').style.display = 'none';
+            selectedOption = null;
         }
 
-        function checkAnswer() {
-            if (showingResult) {
-                nextQuestion();
-                return;
-            }
+        function selectOption(index, answer) {
+            // 移除所有選項的選中狀態
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // 添加選中狀態
+            document.querySelectorAll('.option-btn')[index].classList.add('selected');
+            selectedOption = { index, answer };
+            
+            // 立即檢查答案
+            checkAnswer(answer);
+        }
 
-            const userAnswer = document.getElementById('answerInput').value.trim();
-            if (!userAnswer) {
-                alert('請輸入答案');
-                return;
-            }
-
+        function checkAnswer(userAnswer) {
             const q = questions[currentQuestionIndex];
-            const normalizedUser = userAnswer.toLowerCase();
-            const normalizedCorrect = q.answer.trim().toLowerCase();
-            const isCorrect = normalizedUser === normalizedCorrect;
+            const isCorrect = userAnswer === q.correctAnswer;
 
             if (isCorrect) {
                 score++;
+                document.querySelectorAll('.option-btn')[selectedOption.index].classList.add('correct');
+            } else {
+                document.querySelectorAll('.option-btn')[selectedOption.index].classList.add('incorrect');
+                // 顯示正確答案
+                const correctIndex = q.options.indexOf(q.correctAnswer);
+                document.querySelectorAll('.option-btn')[correctIndex].classList.add('correct');
+                
+                // 記錄錯誤
+                const key = `${q.question}`;
+                if (!wrongAnswers[key]) {
+                    wrongAnswers[key] = {
+                        question: q.question,
+                        word: q.vocab.english,
+                        pos: q.vocab.pos,
+                        type: q.isEnglishToChina ? '英文 → 中文' : '中文 → 英文',
+                        userAnswer: userAnswer,
+                        correctAnswer: q.correctAnswer,
+                        count: 0
+                    };
+                }
+                wrongAnswers[key].count++;
             }
 
             const feedbackBox = document.getElementById('feedbackBox');
             feedbackBox.classList.remove('hidden');
             feedbackBox.classList.remove('correct', 'incorrect');
             feedbackBox.classList.add(isCorrect ? 'correct' : 'incorrect');
-            feedbackBox.textContent = isCorrect 
-                ? '✓ 正確！' 
-                : `✗ 錯誤。正確答案是：${q.answer}`;
+            
+            if (isCorrect) {
+                feedbackBox.textContent = '✓ 正確！';
+            } else {
+                feedbackBox.textContent = `✗ 錯誤。正確答案是：${q.correctAnswer}`;
+            }
 
             answers.push({
                 question: q.question,
                 userAnswer,
-                correctAnswer: q.answer,
+                correctAnswer: q.correctAnswer,
                 isCorrect
             });
 
-            document.getElementById('answerInput').disabled = true;
-            document.getElementById('submitBtn').textContent = currentQuestionIndex === 19 ? '查看結果 →' : '下一題 →';
-            showingResult = true;
+            // 禁用所有選項
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.disabled = true;
+            });
+
+            // 顯示下一題按鈕
+            if (currentQuestionIndex === 19) {
+                document.getElementById('submitBtn').textContent = '查看結果 →';
+            } else {
+                document.getElementById('submitBtn').textContent = '下一題 →';
+            }
+            document.getElementById('submitBtn').style.display = 'block';
         }
 
-        function nextQuestion() {
+        function submitAnswer() {
             if (currentQuestionIndex < questions.length - 1) {
                 currentQuestionIndex++;
                 displayQuestion();
@@ -941,76 +1136,74 @@
             evalTitle.style.color = color;
             document.getElementById('evaluationMessage').textContent = message;
 
-            const answersList = document.getElementById('answersList');
-            answersList.innerHTML = '';
-            
-            const title = document.createElement('p');
-            title.style.fontSize = '13px';
-            title.style.fontWeight = '500';
-            title.style.color = 'var(--text-primary)';
-            title.style.marginBottom = '1rem';
-            title.textContent = '詳細答案';
-            answersList.appendChild(title);
-
-            answers.forEach(ans => {
-                const item = document.createElement('div');
-                item.className = `answer-item ${ans.isCorrect ? 'correct' : 'incorrect'}`;
-
-                const status = document.createElement('p');
-                status.className = `answer-status ${ans.isCorrect ? 'correct' : 'incorrect'}`;
-                status.textContent = ans.isCorrect ? '✓ 正確' : '✗ 錯誤';
-
-                const question = document.createElement('p');
-                question.className = 'answer-question';
-                question.textContent = `題目：${ans.question}`;
-
-                const content = [status, question];
-
-                if (!ans.isCorrect) {
-                    const userAns = document.createElement('p');
-                    userAns.className = 'answer-user';
-                    userAns.textContent = `你的答案：${ans.userAnswer}`;
-                    content.push(userAns);
-                }
-
-                const correct = document.createElement('p');
-                correct.className = `answer-correct ${ans.isCorrect ? 'correct' : 'incorrect'}`;
-                correct.textContent = `正確答案：${ans.correctAnswer}`;
-                content.push(correct);
-
-                content.forEach(el => item.appendChild(el));
-                answersList.appendChild(item);
-            });
+            // 顯示錯題統計
+            const wrongList = Object.values(wrongAnswers);
+            if (wrongList.length > 0) {
+                document.getElementById('wrongCount').textContent = wrongList.length;
+                document.getElementById('wrongAnswersSection').classList.remove('hidden');
+                
+                const wrongListContainer = document.getElementById('wrongAnswersList');
+                wrongListContainer.innerHTML = '';
+                
+                // 按錯誤次數排序
+                wrongList.sort((a, b) => b.count - a.count);
+                
+                wrongList.forEach(wrong => {
+                    const item = document.createElement('div');
+                    item.className = 'wrong-item';
+                    
+                    const header = document.createElement('div');
+                    header.className = 'wrong-item-header';
+                    header.textContent = wrong.question;
+                    
+                    const pos = document.createElement('div');
+                    pos.className = 'wrong-item-pos';
+                    pos.textContent = `${wrong.word} (${wrong.pos})`;
+                    
+                    const type = document.createElement('div');
+                    type.className = 'wrong-item-type';
+                    type.textContent = `題型：${wrong.type}`;
+                    
+                    const userAns = document.createElement('div');
+                    userAns.className = 'wrong-item-your';
+                    userAns.textContent = `你的答案：${wrong.userAnswer}`;
+                    
+                    const correct = document.createElement('div');
+                    correct.className = 'wrong-item-correct';
+                    correct.textContent = `正確答案：${wrong.correctAnswer}`;
+                    
+                    if (wrong.count > 1) {
+                        const countBadge = document.createElement('span');
+                        countBadge.className = 'wrong-count-badge';
+                        countBadge.textContent = `${wrong.count}次`;
+                        correct.appendChild(countBadge);
+                    }
+                    
+                    item.appendChild(header);
+                    item.appendChild(pos);
+                    item.appendChild(type);
+                    item.appendChild(userAns);
+                    item.appendChild(correct);
+                    wrongListContainer.appendChild(item);
+                });
+            } else {
+                document.getElementById('wrongAnswersSection').classList.add('hidden');
+            }
 
             setStage('summary');
         }
 
         function retakeQuiz() {
-            questions = generateQuiz(builtInVocab);
-            score = 0;
-            currentQuestionIndex = 0;
-            answers = [];
-            showingResult = false;
-            displayQuestion();
-            setStage('quiz');
+            startQuiz();
         }
 
         function resetQuiz() {
             currentQuestionIndex = 0;
             score = 0;
             answers = [];
-            showingResult = false;
+            wrongAnswers = {};
+            selectedOption = null;
             setStage('welcome');
-        }
-
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') {
-                if (showingResult) {
-                    nextQuestion();
-                } else {
-                    checkAnswer();
-                }
-            }
         }
 
         function setStage(stage) {
