@@ -497,8 +497,8 @@
                 <ul class="features">
                     <li>四選一選擇題</li>
                     <li>顯示詞性 (n./v./adj. 等)</li>
+                    <li>選項多樣不重複</li>
                     <li>錯題統計與分析</li>
-                    <li>288 個 TSMC 常用單字</li>
                 </ul>
 
                 <div class="vocab-stats">
@@ -593,18 +593,84 @@
     </div>
 
     <script>
-        // 隨機詞彙生成（用於干擾項）
-        const randomWords = [
-            'analyze', 'benchmark', 'calibrate', 'diagnose', 'evaluate',
-            'fabricate', 'generate', 'handle', 'integrate', 'justify',
-            'knowledge', 'leverage', 'manipulate', 'navigate', 'optimize',
-            'protocol', 'quantify', 'realize', 'simulate', 'terminate',
-            'utilize', 'validate', 'warehouse', 'xenophobic', 'yield',
-            'aggregate', 'calculate', 'database', 'encrypt', 'firmware',
-            'graphics', 'hardware', 'initialize', 'junction', 'kernel',
-            'layout', 'module', 'network', 'oscillate', 'package',
-            'quantum', 'register', 'sequence', 'threshold', 'upload'
-        ];
+        // 擴大的隨機詞彙庫 - 用於干擾項 (超過200個詞彙確保多樣性)
+        const distractorWords = {
+            english: [
+                'abstract', 'accelerate', 'accumulate', 'acknowledge', 'accommodate', 'achieve',
+                'acquire', 'adapt', 'address', 'adequate', 'adjacent', 'affirm', 'aggregate',
+                'agriculture', 'algorithm', 'alternative', 'ambiguous', 'amendment', 'amplify',
+                'analogue', 'analyze', 'animate', 'anniversary', 'announcement', 'annoy', 'anonymous',
+                'anticipate', 'antique', 'anxiety', 'apartment', 'apology', 'apparatus', 'apparel',
+                'apparent', 'appeal', 'appearance', 'appetite', 'applaud', 'application', 'appoint',
+                'appreciate', 'apprentice', 'approach', 'appropriate', 'approval', 'approximate',
+                'arbitrary', 'arcade', 'architect', 'archive', 'arduous', 'argue', 'argument',
+                'arise', 'arithmetic', 'armament', 'armor', 'aroma', 'arrange', 'arrangement',
+                'arrest', 'arrival', 'arrogant', 'arsenal', 'artifact', 'artificial', 'ascend',
+                'ascent', 'aspect', 'aspiration', 'assault', 'assemble', 'assert', 'assess',
+                'asset', 'assign', 'assimilate', 'assist', 'associate', 'assort', 'assume',
+                'assurance', 'astonish', 'astute', 'asylum', 'atmosphere', 'atrocity', 'attain',
+                'attempt', 'attend', 'attitude', 'attorney', 'attract', 'attribute', 'auction',
+                'audacity', 'audience', 'augment', 'auspice', 'austere', 'authority', 'autocrat',
+                'automate', 'automobile', 'autumn', 'auxiliary', 'avalanche', 'avenue', 'average',
+                'aversion', 'aviation', 'avoid', 'await', 'awaken', 'award', 'aware', 'awareness',
+                'awesome', 'awkward', 'axiom', 'axis', 'azure', 'bachelor', 'bacteria', 'badge',
+                'baggage', 'balance', 'balcony', 'baldness', 'ballet', 'balloon', 'ballot',
+                'bamboo', 'banana', 'bandage', 'bandit', 'bandwidth', 'banish', 'banquet', 'barbarian',
+                'barbecue', 'barber', 'bare', 'bargain', 'barge', 'barking', 'barley', 'barometer',
+                'baron', 'baroque', 'barracks', 'barrel', 'barren', 'barrette', 'barrier', 'barrio',
+                'barroom', 'bartender', 'basalt', 'baseball', 'baseboard', 'basement', 'bashful',
+                'basilica', 'basilisk', 'basket', 'basketball', 'bassinet', 'bassoon', 'batched',
+                'bather', 'bathetic', 'bathrobe', 'bathroom', 'bathtub', 'battalion', 'batter',
+                'battery', 'battle', 'battlefield', 'battleground', 'battleship', 'bawdy', 'bawl',
+                'bayonet', 'bazaar', 'beach', 'beacon', 'bead', 'beagle', 'beak', 'beaker', 'beamed',
+                'bean', 'bearer', 'bearing', 'beast', 'beaten', 'beater', 'beatific', 'beatitude',
+                'beau', 'beauty', 'beaver', 'became', 'become', 'bedaub', 'bedding', 'bedlam',
+                'bedpan', 'bedpost', 'bedraggle', 'bedroom', 'bedside', 'bedsore', 'bedspread',
+                'bedtime', 'bee', 'beech', 'beef', 'beefy', 'beehive', 'beekeeper', 'beeswax',
+                'beer', 'beet', 'beetle', 'befall', 'befit', 'befitting', 'befuddle', 'beggar',
+                'beggary', 'begin', 'beginner', 'beginning', 'begone', 'begonia', 'begrudge',
+                'beguile', 'begun', 'behalf', 'behave', 'behavior', 'behead', 'behemoth', 'behest',
+                'behind', 'behold', 'beholden', 'beholder', 'behoove', 'beige', 'being', 'belabor',
+                'belated', 'belch', 'beleaguer', 'belfry', 'belie', 'belief', 'believable', 'believe',
+                'belittle', 'belladonna', 'bell', 'bellboy', 'belle', 'bellhop', 'bellicose',
+                'belligerent', 'bellow', 'bellows', 'belly', 'bellyache', 'belong', 'belonging',
+                'beloved', 'below', 'belt', 'beltway', 'bemire', 'bemoan', 'bemuse', 'bench',
+                'benchmark', 'bend', 'beneath', 'benediction', 'benefactor', 'beneficence',
+                'beneficial', 'beneficiary', 'benefit', 'benevolence', 'benevolent', 'benign',
+                'calculus', 'calibrate', 'calcium', 'calculate', 'calendar', 'calf', 'caliber',
+                'candidate', 'capability', 'capacitor', 'capacity', 'capital', 'captive', 'carbon',
+                'carcinogen', 'cardboard', 'cardinal', 'careful', 'careless', 'cargo', 'carnival',
+                'carpet', 'carriage', 'carrier', 'carrion', 'carrot', 'carousel', 'carpenter'
+            ],
+            chinese: [
+                '分析', '運用', '策略', '計畫', '設計', '製造', '生產', '測試', '檢驗', '驗證',
+                '維修', '保養', '維護', '管理', '監督', '指導', '協助', '支持', '評估', '審查',
+                '審批', '確認', '核實', '驗算', '統計', '報告', '記錄', '存檔', '提交', '上報',
+                '通知', '告知', '說明', '解釋', '說清楚', '講解', '指示', '下令', '命令', '指揮',
+                '執行', '進行', '實施', '實行', '開展', '展開', '推進', '推動', '促進', '加快',
+                '加速', '減速', '延遲', '延期', '推遲', '取消', '中止', '暫停', '停止', '終止',
+                '結束', '完成', '圓滿', '成功', '失敗', '失誤', '錯誤', '過失', '缺陷', '不足',
+                '問題', '麻煩', '困難', '障礙', '阻礙', '干擾', '影響', '作用', '效果',
+                '結果', '後果', '反應', '應對', '處理', '解決', '改正', '修正', '調整', '改善',
+                '改進', '改變', '轉變', '轉換', '替換', '更新', '更換', '升級', '降級', '優化',
+                '簡化', '複雜', '簡單', '容易', '困難', '可能', '不可能', '相同', '不同', '相似',
+                '差異', '區別', '差別', '對比', '比較', '相比', '而言', '綜合', '整體', '全面',
+                '部分', '局部', '細節', '細微', '詳細', '仔細', '粗糙', '粗略', '大致', '大概',
+                '基本', '基礎', '根本', '核心', '中心', '要點', '重點', '重要', '主要', '次要',
+                '次序', '順序', '先後', '先決', '前提', '條件', '要求', '標準', '規格', '規則',
+                '原則', '原理', '學說', '理論', '實踐', '應用', '方法', '手段', '途徑', '方式',
+                '方向', '目標', '目的', '意圖', '願望', '希望', '期望', '期待', '預期',
+                '預估', '預測', '預料', '猜測', '推測', '假設', '推斷', '判斷', '決定', '確定',
+                '決策', '選擇', '抉擇', '決心', '態度', '立場', '觀點', '角度', '方面',
+                '作用', '效用', '用途', '功能', '功效', '效益', '收益', '利益', '好處', '優勢',
+                '劣勢', '機會', '威脅', '風險', '安全', '危險', '穩定', '不穩定', '可靠', '不可靠',
+                '高效', '低效', '快速', '緩慢', '準確', '不準確', '精密', '粗糙', '精確', '近似',
+                '偏差', '誤差', '差距', '距離', '範圍', '尺寸', '大小', '長度', '寬度', '高度',
+                '深度', '厚度', '重量', '輕量', '體積', '容量', '面積', '周長', '半徑', '直徑',
+                '溫度', '濕度', '壓力', '速度', '加速度', '力量', '能量', '功率', '電流', '電壓',
+                '頻率', '週期', '波長', '振幅', '相位', '容抗', '電阻', '電感', '電容', '導體'
+            ]
+        };
 
         // 內建題庫 - TSMC 常用英文單字 (帶詞性)
         const builtInVocab = [
@@ -905,29 +971,55 @@
         let answers = [];
         let selectedOption = null;
         let wrongAnswers = {};
+        let usedDistracters = new Set();
 
-        function getRandomWrongAnswers(correctAnswer, correctChinese, count = 3) {
+        function getRandomWrongAnswers(correctAnswer, correctChinese, isEnglishToChina, count = 3) {
             const answers = [];
             const usedWords = new Set([correctAnswer, correctChinese]);
             
-            // 先從題庫中取得其他中文答案
-            for (let vocab of builtInVocab) {
-                if (answers.length >= count) break;
-                if (!usedWords.has(vocab.chinese) && vocab.chinese !== correctChinese) {
-                    answers.push(vocab.chinese);
-                    usedWords.add(vocab.chinese);
-                }
-            }
-            
-            // 如果還需要更多，用隨機詞彙加個後綴
-            while (answers.length < count) {
-                const randomWord = randomWords[Math.floor(Math.random() * randomWords.length)];
-                const suffix = ['ation', 'ment', 'ness', 'ity', 'ing'][Math.floor(Math.random() * 5)];
-                const fakeAnswer = randomWord + suffix;
+            if (isEnglishToChina) {
+                // 英翻中：需要中文干擾項
                 
-                if (!usedWords.has(fakeAnswer)) {
-                    answers.push(fakeAnswer);
-                    usedWords.add(fakeAnswer);
+                // 1. 先隨機選擇其他題庫中文（打亂順序以避免線性重複）
+                const vocabChineseCopy = [...builtInVocab].sort(() => Math.random() - 0.5);
+                for (let vocab of vocabChineseCopy) {
+                    if (answers.length >= count) break;
+                    if (!usedWords.has(vocab.chinese) && vocab.chinese !== correctChinese) {
+                        answers.push(vocab.chinese);
+                        usedWords.add(vocab.chinese);
+                    }
+                }
+                
+                // 2. 補充隨機生成的虛假中文
+                while (answers.length < count) {
+                    const randomIdx = Math.floor(Math.random() * distractorWords.chinese.length);
+                    const fakeChinese = distractorWords.chinese[randomIdx];
+                    if (!usedWords.has(fakeChinese)) {
+                        answers.push(fakeChinese);
+                        usedWords.add(fakeChinese);
+                    }
+                }
+            } else {
+                // 中翻英：需要英文干擾項
+                
+                // 1. 先隨機選擇其他題庫英文（打亂順序以避免線性重複）
+                const vocabEnglishCopy = [...builtInVocab].sort(() => Math.random() - 0.5);
+                for (let vocab of vocabEnglishCopy) {
+                    if (answers.length >= count) break;
+                    if (vocab.english !== correctAnswer && !usedWords.has(vocab.english)) {
+                        answers.push(vocab.english);
+                        usedWords.add(vocab.english);
+                    }
+                }
+                
+                // 2. 補充隨機生成的虛假英文
+                while (answers.length < count) {
+                    const randomIdx = Math.floor(Math.random() * distractorWords.english.length);
+                    const fakeEnglish = distractorWords.english[randomIdx];
+                    if (!usedWords.has(fakeEnglish)) {
+                        answers.push(fakeEnglish);
+                        usedWords.add(fakeEnglish);
+                    }
                 }
             }
             
@@ -938,30 +1030,15 @@
             const shuffled = [...vocab].sort(() => Math.random() - 0.5);
             const selected = shuffled.slice(0, 20);
             
+            usedDistracters.clear();
+            
             return selected.map(vocab => {
                 const isEnglishToChina = Math.random() > 0.5;
                 const question = isEnglishToChina ? vocab.english : vocab.chinese;
                 const correctAnswer = isEnglishToChina ? vocab.chinese : vocab.english;
                 
                 let options = [correctAnswer];
-                
-                if (isEnglishToChina) {
-                    // 英翻中：找其他中文選項
-                    options = options.concat(getRandomWrongAnswers(vocab.english, vocab.chinese, 3));
-                } else {
-                    // 中翻英：找其他英文選項
-                    const wrongEnglish = [];
-                    for (let v of builtInVocab) {
-                        if (wrongEnglish.length >= 3) break;
-                        if (v.english !== vocab.english) {
-                            wrongEnglish.push(v.english);
-                        }
-                    }
-                    while (wrongEnglish.length < 3) {
-                        wrongEnglish.push(randomWords[Math.floor(Math.random() * randomWords.length)]);
-                    }
-                    options = options.concat(wrongEnglish);
-                }
+                options = options.concat(getRandomWrongAnswers(vocab.english, vocab.chinese, isEnglishToChina, 3));
                 
                 // 隨機排列選項
                 options = options.sort(() => Math.random() - 0.5);
