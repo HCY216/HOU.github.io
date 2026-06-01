@@ -113,6 +113,14 @@
             opacity: 0.9;
         }
 
+        button.secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-color: var(--border-color-secondary);
+            font-size: 13px;
+            padding: 8px 16px;
+        }
+
         .hidden {
             display: none;
         }
@@ -151,6 +159,42 @@
             margin-bottom: 1.5rem;
         }
 
+        .stats-overview {
+            background: var(--bg-primary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 0.5px solid var(--border-color);
+        }
+
+        .stats-overview-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-overview-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .stat-item-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .stat-item-value {
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--color-info);
+        }
+
         .features {
             text-align: left;
             background: var(--bg-primary);
@@ -174,6 +218,18 @@
             left: 0;
             color: var(--color-success);
             font-weight: bold;
+        }
+
+        .button-group-welcome {
+            display: flex;
+            gap: 12px;
+            flex-direction: column;
+        }
+
+        .button-group-welcome button {
+            width: 100%;
+            padding: 14px 24px;
+            font-size: 16px;
         }
 
         .vocab-stats {
@@ -481,6 +537,99 @@
             margin-left: 0.5rem;
             font-weight: 500;
         }
+
+        .history-item {
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--color-warning);
+            border-radius: 6px;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        .history-item-header {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .history-item-pos {
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 0.25rem;
+        }
+
+        .history-item-count {
+            font-weight: 500;
+            color: var(--color-danger);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            padding: 0;
+            min-width: auto;
+        }
+
+        .clear-data-btn {
+            background: var(--color-danger);
+            color: white;
+            border-color: var(--color-danger);
+            margin-top: 1rem;
+        }
+
+        .clear-data-btn:hover {
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
@@ -494,11 +643,24 @@
                 <h2 class="welcome-title">四選一升級版</h2>
                 <p class="welcome-subtitle">隨機 20 題，智能出題</p>
                 
+                <div class="stats-overview">
+                    <div class="stats-overview-row">
+                        <div class="stat-item">
+                            <span class="stat-item-label">累計測驗次數</span>
+                            <span class="stat-item-value" id="totalQuizzes">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-item-label">歷史錯題數</span>
+                            <span class="stat-item-value" id="totalWrongQuestions">0</span>
+                        </div>
+                    </div>
+                </div>
+
                 <ul class="features">
                     <li>四選一選擇題</li>
                     <li>顯示詞性 (n./v./adj. 等)</li>
                     <li>選項多樣不重複</li>
-                    <li>錯題統計與分析</li>
+                    <li>記錄測驗歷史</li>
                 </ul>
 
                 <div class="vocab-stats">
@@ -512,9 +674,10 @@
                     </div>
                 </div>
 
-                <button class="primary" onclick="startQuiz()" style="width: 100%; padding: 14px 24px; font-size: 16px;">
-                    開始測驗
-                </button>
+                <div class="button-group-welcome">
+                    <button class="primary" onclick="startQuiz()">開始測驗</button>
+                    <button class="secondary" onclick="showHistory()">📊 查看歷史</button>
+                </div>
             </div>
         </div>
 
@@ -579,7 +742,7 @@
 
             <div id="wrongAnswersSection" class="hidden">
                 <p class="section-title">
-                    ❌ 錯誤題目統計 
+                    ❌ 本次錯誤題目 
                     <span class="wrong-count-badge" id="wrongCount">0</span>
                 </p>
                 <div class="wrong-answers-list" id="wrongAnswersList"></div>
@@ -592,8 +755,38 @@
         </div>
     </div>
 
+    <!-- History Modal -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">📊 測驗歷史</h2>
+                <button class="modal-close" onclick="closeHistory()">✕</button>
+            </div>
+
+            <div style="margin-bottom: 1.5rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 0.5rem;">累計測驗次數</div>
+                        <div style="font-size: 24px; font-weight: 500; color: var(--color-info);" id="historyTotalQuizzes">0</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 0.5rem;">累計錯題數</div>
+                        <div style="font-size: 24px; font-weight: 500; color: var(--color-danger);" id="historyTotalWrong">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="section-title">常錯題目排行 (按錯誤次數)</p>
+            <div id="historyList" style="max-height: 400px; overflow-y: auto;">
+                <p style="color: var(--text-secondary); text-align: center;">暫無錯題記錄</p>
+            </div>
+
+            <button class="clear-data-btn" onclick="confirmClearData()">🗑️ 清空所有數據</button>
+        </div>
+    </div>
+
     <script>
-        // 擴大的隨機詞彙庫 - 用於干擾項 (超過200個詞彙確保多樣性)
+        // 擴大的隨機詞彙庫
         const distractorWords = {
             english: [
                 'abstract', 'accelerate', 'accumulate', 'acknowledge', 'accommodate', 'achieve',
@@ -672,7 +865,7 @@
             ]
         };
 
-        // 內建題庫 - TSMC 常用英文單字 (帶詞性)
+        // 內建題庫 - TSMC 常用英文單字
         const builtInVocab = [
             {english: "ability", chinese: "能力", pos: "n."},
             {english: "abnormal", chinese: "異常的", pos: "a."},
@@ -971,16 +1164,53 @@
         let answers = [];
         let selectedOption = null;
         let wrongAnswers = {};
-        let usedDistracters = new Set();
+
+        // LocalStorage 功能
+        function initializeStats() {
+            const stats = localStorage.getItem('quizStats');
+            if (!stats) {
+                localStorage.setItem('quizStats', JSON.stringify({
+                    totalQuizzes: 0,
+                    historyWrongQuestions: {}
+                }));
+            }
+            updateStatsDisplay();
+        }
+
+        function saveQuizResult() {
+            const stats = JSON.parse(localStorage.getItem('quizStats'));
+            stats.totalQuizzes++;
+
+            // 保存本次答錯的題目到歷史記錄
+            for (const [key, wrongItem] of Object.entries(wrongAnswers)) {
+                if (!stats.historyWrongQuestions[key]) {
+                    stats.historyWrongQuestions[key] = {
+                        question: wrongItem.question,
+                        word: wrongItem.word,
+                        pos: wrongItem.pos,
+                        type: wrongItem.type,
+                        correctAnswer: wrongItem.correctAnswer,
+                        wrongCount: 0
+                    };
+                }
+                stats.historyWrongQuestions[key].wrongCount += wrongItem.count;
+            }
+
+            localStorage.setItem('quizStats', JSON.stringify(stats));
+            updateStatsDisplay();
+        }
+
+        function updateStatsDisplay() {
+            const stats = JSON.parse(localStorage.getItem('quizStats'));
+            document.getElementById('totalQuizzes').textContent = stats.totalQuizzes;
+            document.getElementById('totalWrongQuestions').textContent = Object.keys(stats.historyWrongQuestions).length;
+        }
 
         function getRandomWrongAnswers(correctAnswer, correctChinese, isEnglishToChina, count = 3) {
             const answers = [];
             const usedWords = new Set([correctAnswer, correctChinese]);
             
             if (isEnglishToChina) {
-                // 英翻中：需要中文干擾項
-                
-                // 1. 先隨機選擇其他題庫中文（打亂順序以避免線性重複）
                 const vocabChineseCopy = [...builtInVocab].sort(() => Math.random() - 0.5);
                 for (let vocab of vocabChineseCopy) {
                     if (answers.length >= count) break;
@@ -990,7 +1220,6 @@
                     }
                 }
                 
-                // 2. 補充隨機生成的虛假中文
                 while (answers.length < count) {
                     const randomIdx = Math.floor(Math.random() * distractorWords.chinese.length);
                     const fakeChinese = distractorWords.chinese[randomIdx];
@@ -1000,9 +1229,6 @@
                     }
                 }
             } else {
-                // 中翻英：需要英文干擾項
-                
-                // 1. 先隨機選擇其他題庫英文（打亂順序以避免線性重複）
                 const vocabEnglishCopy = [...builtInVocab].sort(() => Math.random() - 0.5);
                 for (let vocab of vocabEnglishCopy) {
                     if (answers.length >= count) break;
@@ -1012,7 +1238,6 @@
                     }
                 }
                 
-                // 2. 補充隨機生成的虛假英文
                 while (answers.length < count) {
                     const randomIdx = Math.floor(Math.random() * distractorWords.english.length);
                     const fakeEnglish = distractorWords.english[randomIdx];
@@ -1030,8 +1255,6 @@
             const shuffled = [...vocab].sort(() => Math.random() - 0.5);
             const selected = shuffled.slice(0, 20);
             
-            usedDistracters.clear();
-            
             return selected.map(vocab => {
                 const isEnglishToChina = Math.random() > 0.5;
                 const question = isEnglishToChina ? vocab.english : vocab.chinese;
@@ -1040,7 +1263,6 @@
                 let options = [correctAnswer];
                 options = options.concat(getRandomWrongAnswers(vocab.english, vocab.chinese, isEnglishToChina, 3));
                 
-                // 隨機排列選項
                 options = options.sort(() => Math.random() - 0.5);
                 
                 return {
@@ -1080,7 +1302,6 @@
             document.getElementById('question').textContent = q.question;
             document.getElementById('wordPos').textContent = `(${q.vocab.pos})`;
 
-            // 生成選項按鈕
             const optionsContainer = document.getElementById('optionsContainer');
             optionsContainer.innerHTML = '';
             
@@ -1098,16 +1319,13 @@
         }
 
         function selectOption(index, answer) {
-            // 移除所有選項的選中狀態
             document.querySelectorAll('.option-btn').forEach(btn => {
                 btn.classList.remove('selected');
             });
             
-            // 添加選中狀態
             document.querySelectorAll('.option-btn')[index].classList.add('selected');
             selectedOption = { index, answer };
             
-            // 立即檢查答案
             checkAnswer(answer);
         }
 
@@ -1120,11 +1338,9 @@
                 document.querySelectorAll('.option-btn')[selectedOption.index].classList.add('correct');
             } else {
                 document.querySelectorAll('.option-btn')[selectedOption.index].classList.add('incorrect');
-                // 顯示正確答案
                 const correctIndex = q.options.indexOf(q.correctAnswer);
                 document.querySelectorAll('.option-btn')[correctIndex].classList.add('correct');
                 
-                // 記錄錯誤
                 const key = `${q.question}`;
                 if (!wrongAnswers[key]) {
                     wrongAnswers[key] = {
@@ -1158,12 +1374,10 @@
                 isCorrect
             });
 
-            // 禁用所有選項
             document.querySelectorAll('.option-btn').forEach(btn => {
                 btn.disabled = true;
             });
 
-            // 顯示下一題按鈕
             if (currentQuestionIndex === 19) {
                 document.getElementById('submitBtn').textContent = '查看結果 →';
             } else {
@@ -1213,7 +1427,6 @@
             evalTitle.style.color = color;
             document.getElementById('evaluationMessage').textContent = message;
 
-            // 顯示錯題統計
             const wrongList = Object.values(wrongAnswers);
             if (wrongList.length > 0) {
                 document.getElementById('wrongCount').textContent = wrongList.length;
@@ -1222,7 +1435,6 @@
                 const wrongListContainer = document.getElementById('wrongAnswersList');
                 wrongListContainer.innerHTML = '';
                 
-                // 按錯誤次數排序
                 wrongList.sort((a, b) => b.count - a.count);
                 
                 wrongList.forEach(wrong => {
@@ -1267,6 +1479,9 @@
                 document.getElementById('wrongAnswersSection').classList.add('hidden');
             }
 
+            // 保存測驗結果到localStorage
+            saveQuizResult();
+
             setStage('summary');
         }
 
@@ -1283,6 +1498,62 @@
             setStage('welcome');
         }
 
+        function showHistory() {
+            const stats = JSON.parse(localStorage.getItem('quizStats'));
+            document.getElementById('historyTotalQuizzes').textContent = stats.totalQuizzes;
+            document.getElementById('historyTotalWrong').textContent = Object.keys(stats.historyWrongQuestions).length;
+
+            const historyList = document.getElementById('historyList');
+            const wrongQuestions = Object.values(stats.historyWrongQuestions);
+
+            if (wrongQuestions.length === 0) {
+                historyList.innerHTML = '<p style="color: var(--text-secondary); text-align: center;">暫無錯題記錄</p>';
+            } else {
+                wrongQuestions.sort((a, b) => b.wrongCount - a.wrongCount);
+                historyList.innerHTML = '';
+
+                wrongQuestions.forEach(wrong => {
+                    const item = document.createElement('div');
+                    item.className = 'history-item';
+
+                    const header = document.createElement('div');
+                    header.className = 'history-item-header';
+                    header.textContent = wrong.question;
+
+                    const pos = document.createElement('div');
+                    pos.className = 'history-item-pos';
+                    pos.textContent = `${wrong.word} (${wrong.pos})`;
+
+                    const count = document.createElement('div');
+                    count.className = 'history-item-count';
+                    count.textContent = `錯誤 ${wrong.wrongCount} 次 | 正確答案：${wrong.correctAnswer}`;
+
+                    item.appendChild(header);
+                    item.appendChild(pos);
+                    item.appendChild(count);
+                    historyList.appendChild(item);
+                });
+            }
+
+            document.getElementById('historyModal').classList.add('active');
+        }
+
+        function closeHistory() {
+            document.getElementById('historyModal').classList.remove('active');
+        }
+
+        function confirmClearData() {
+            if (confirm('確定要清空所有測驗數據嗎？此操作無法復原。')) {
+                localStorage.setItem('quizStats', JSON.stringify({
+                    totalQuizzes: 0,
+                    historyWrongQuestions: {}
+                }));
+                updateStatsDisplay();
+                closeHistory();
+                alert('所有數據已清空');
+            }
+        }
+
         function setStage(stage) {
             document.getElementById('welcomeStage').classList.remove('active');
             document.getElementById('quizStage').classList.remove('active');
@@ -1290,6 +1561,7 @@
 
             if (stage === 'welcome') {
                 document.getElementById('welcomeStage').classList.add('active');
+                updateStatsDisplay();
             } else if (stage === 'quiz') {
                 document.getElementById('quizStage').classList.add('active');
             } else if (stage === 'summary') {
@@ -1297,6 +1569,11 @@
             }
             currentStage = stage;
         }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeStats();
+        });
     </script>
 </body>
 </html>
